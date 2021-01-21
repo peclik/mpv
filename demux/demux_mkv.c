@@ -2636,6 +2636,11 @@ static int handle_block(demuxer_t *demuxer, struct block_info *block_info)
             }
         }
         if (use_this_block) {
+            // show subtitle even if the duration is 0, for now 100ms is hardcoded
+            //MP_DBG(demuxer, "SUB1: s=%"PRId64"  d=%"PRId64" kn=%d  .\n", block_info->timecode, block_info->duration, block_info->duration_known);
+            if (block_duration == 0)
+              block_duration = 100 * 1e6; // [nsec]
+            
             if (block_info->num_laces > 1) {
                 MP_WARN(demuxer, "Subtitles use Matroska "
                        "lacing. This is abnormal and not supported.\n");
